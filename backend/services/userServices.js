@@ -1,11 +1,11 @@
-const account = require("../models/account");
-const AccountRepository = require("../repositories/accountsRepository");
+const user = require("../models/user");
+const UserRepository = require("../repositories/userRepository");
 
-class AccountService {
+class UserService {
     static findAll = async (params, next) => {
         try {
-            const accounts = await AccountRepository.findAll();
-            return accounts;
+            const users = await UserRepository.findAll();
+            return users;
         } catch (err) {
             next(err);
         }
@@ -14,8 +14,8 @@ class AccountService {
     static findOne = async (params, next) => {
         try {
             const { id } = params;
-            const account = await AccountRepository.findOne(id, next);
-            return account;
+            const user = await UserRepository.findOne(id, next);
+            return user;
         } catch (err) {
             next(err);
         }
@@ -25,12 +25,12 @@ class AccountService {
         try {
             const { name, email, password } = params;
 
-            const account = await AccountRepository.create({
+            const user = await UserRepository.create({
                 name,
                 email,
                 password,
             });
-            return account;
+            return user;
         } catch (err) {
             console.log(err);
         }
@@ -47,27 +47,24 @@ class AccountService {
                 password,
             };
 
-            const account = await AccountRepository.update(id, payload);
+            const user = await UserRepository.update(id, payload);
 
-            return account;
+            return user;
         } catch (err) {
             console.log(err);
         }
     };
 
-    static destroy = async (id, next) => {
+    static destroy = async (params) => {
         try {
-            const result = await AccountRepository.destroy(id);
+            const { id } = params;
+            const user = await UserRepository.destroy(id);
 
-            if (result === null) {
-                return null; // Account not found
-            }
-
-            return true; // Deletion successful
+            return user;
         } catch (err) {
-            next(err);
+            console.log(err);
         }
     };
 }
 
-module.exports = AccountService;
+module.exports = UserService;

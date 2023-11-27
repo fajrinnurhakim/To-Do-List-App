@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            MyList.belongsTo(models.Account, {
-                foreignKey: "id_account",
+            MyList.belongsTo(models.User, {
+                foreignKey: "id_user",
             });
         }
     }
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             start_time: DataTypes.TIME,
             end_time: DataTypes.TIME,
             status: DataTypes.BOOLEAN,
-            id_account: DataTypes.INTEGER,
+            id_user: DataTypes.INTEGER,
         },
         {
             sequelize,

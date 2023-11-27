@@ -51,17 +51,15 @@ class MyListRepository {
 
     static destroy = async (id) => {
         try {
-            const deletedRowCount = await MyList.destroy({
-                where: { id },
+            const myList = await MyList.destroy({
+                where: {
+                    id,
+                },
             });
 
-            if (deletedRowCount === 0) {
-                return null; // MyList not found
-            }
-
-            return true; // Deletion successful
+            return myList;
         } catch (err) {
-            throw err;
+            console.log(err);
         }
     };
 }

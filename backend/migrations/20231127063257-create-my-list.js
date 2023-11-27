@@ -13,7 +13,7 @@ module.exports = {
                 type: Sequelize.STRING,
             },
             tanggal: {
-                type: Sequelize.DATE,
+                type: Sequelize.DATEONLY,
             },
             start_time: {
                 type: Sequelize.TIME,
@@ -24,10 +24,10 @@ module.exports = {
             status: {
                 type: Sequelize.BOOLEAN,
             },
-            id_account: {
+            id_user: {
                 type: Sequelize.INTEGER,
                 references: {
-                    model: "Accounts",
+                    model: "Users",
                     key: "id",
                 },
                 onUpdate: "CASCADE",

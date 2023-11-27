@@ -23,7 +23,7 @@ class MyListService {
 
     static create = async (params) => {
         try {
-            const { title, tanggal, start_time, end_time, status, id_account } =
+            const { title, tanggal, start_time, end_time, status, id_user } =
                 params;
 
             const myList = await MyListRepository.create({
@@ -32,7 +32,7 @@ class MyListService {
                 start_time,
                 end_time,
                 status,
-                id_account,
+                id_user,
             });
             return myList;
         } catch (err) {
@@ -44,7 +44,7 @@ class MyListService {
         try {
             const { id } = pathParams;
 
-            const { title, tanggal, start_time, end_time, status, id_account } =
+            const { title, tanggal, start_time, end_time, status, id_user } =
                 params;
             let payload = {
                 title,
@@ -52,7 +52,7 @@ class MyListService {
                 start_time,
                 end_time,
                 status,
-                id_account,
+                id_user,
             };
 
             const myList = await MyListRepository.update(id, payload);
@@ -63,17 +63,14 @@ class MyListService {
         }
     };
 
-    static destroy = async (id, next) => {
+    static destroy = async (params) => {
         try {
-            const result = await MyListRepository.destroy(id);
+            const { id } = params;
+            const myList = await MyListRepository.destroy(id);
 
-            if (result === null) {
-                return null; // MyList not found
-            }
-
-            return true; // Deletion successful
+            return myList;
         } catch (err) {
-            next(err);
+            console.log(err);
         }
     };
 }

@@ -13,6 +13,9 @@ class MyListController {
     static findOne = async (req, res, next) => {
         try {
             const myList = await MyListService.findOne(req.params, next);
+            if (!myList) {
+                throw { name: "ErrorNotFound" };
+            }
             res.status(200).json(myList);
         } catch (err) {
             next(err);
@@ -41,15 +44,13 @@ class MyListController {
 
     static destroy = async (req, res, next) => {
         try {
-            const myListId = req.params.id;
-            const deletedMyList = await MyListService.destroy(myListId, next);
+            const myList = await MyListService.destroy(req.params);
 
-            if (!deletedMyList) {
-                res.status(404).json({ message: "MyList not found" });
-                return;
+            if (!myList) {
+                throw { name: "ErrorNotFound" };
             }
 
-            res.status(204).json();
+            res.status(200).json({ message: "MyList deleted successfully" });
         } catch (err) {
             next(err);
         }

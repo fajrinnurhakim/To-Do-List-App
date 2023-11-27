@@ -1,10 +1,10 @@
-const { Account } = require("../models");
+const { User } = require("../models");
 
-class AccountRepository {
+class UserRepository {
     static findAll = async (params, next) => {
         try {
-            const accounts = await Account.findAll();
-            return accounts;
+            const users = await User.findAll();
+            return users;
         } catch (err) {
             next(err);
         }
@@ -12,15 +12,15 @@ class AccountRepository {
 
     static findOne = async (id, next) => {
         try {
-            const account = await Account.findOne({
+            const user = await User.findOne({
                 where: {
                     id,
                 },
             });
-            if (!account) {
+            if (!user) {
                 throw { name: "ErrorNotFound" };
             }
-            return account;
+            return user;
         } catch (err) {
             next(err);
         }
@@ -28,8 +28,8 @@ class AccountRepository {
 
     static create = async (payload) => {
         try {
-            const account = await Account.create(payload);
-            return account;
+            const user = await User.create(payload);
+            return user;
         } catch (err) {
             next(err);
         }
@@ -37,13 +37,13 @@ class AccountRepository {
 
     static update = async (id, payload) => {
         try {
-            const account = await Account.update(payload, {
+            const user = await User.update(payload, {
                 where: {
                     id,
                 },
             });
 
-            return account;
+            return user;
         } catch (err) {
             console.log(err);
         }
@@ -51,19 +51,17 @@ class AccountRepository {
 
     static destroy = async (id) => {
         try {
-            const deletedRowCount = await Account.destroy({
-                where: { id },
+            const user = await User.destroy({
+                where: {
+                    id,
+                },
             });
 
-            if (deletedRowCount === 0) {
-                return null; // Account not found
-            }
-
-            return true; // Deletion successful
+            return user;
         } catch (err) {
-            throw err;
+            console.log(err);
         }
     };
 }
 
-module.exports = AccountRepository;
+module.exports = UserRepository;
