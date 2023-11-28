@@ -1,4 +1,3 @@
-const mylist = require("../models/mylist");
 const MyListRepository = require("../repositories/myListRepository");
 
 class MyListService {

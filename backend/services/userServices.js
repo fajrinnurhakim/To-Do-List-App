@@ -1,4 +1,3 @@
-const user = require("../models/user");
 const UserRepository = require("../repositories/userRepository");
 
 class UserService {

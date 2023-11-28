@@ -7,7 +7,8 @@ const config = {
         database: process.env.DB_NAME,
         host: process.env.DB_HOST,
         dialect: "postgres",
+        port: 5432,
     },
 };
 
-module.exports = config
+module.exports = config;

@@ -6,8 +6,9 @@ const router = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(router);
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
