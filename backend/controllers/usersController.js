@@ -24,7 +24,6 @@ class UserController {
 
     static create = async (req, res, next) => {
         try {
-            console.log(req.body, "cek");
             const user = await UserService.create(req.body);
 
             res.status(201).json({ message: "User created successfully" });

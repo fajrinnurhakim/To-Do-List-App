@@ -1,10 +1,10 @@
-const { MyList } = require("../models");
+const { Todo } = require("../models");
 
-class MyListRepository {
+class TodoRepository {
     static findAll = async (params, next) => {
         try {
-            const myLists = await MyList.findAll();
-            return myLists;
+            const todos = await Todo.findAll(params);
+            return todos;
         } catch (err) {
             next(err);
         }
@@ -12,15 +12,15 @@ class MyListRepository {
 
     static findOne = async (id, next) => {
         try {
-            const myList = await MyList.findOne({
+            const todo = await Todo.findOne({
                 where: {
                     id,
                 },
             });
-            if (!myList) {
+            if (!todo) {
                 throw { name: "ErrorNotFound" };
             }
-            return myList;
+            return todo;
         } catch (err) {
             next(err);
         }
@@ -28,8 +28,8 @@ class MyListRepository {
 
     static create = async (payload) => {
         try {
-            const myList = await MyList.create(payload);
-            return myList;
+            const todo = await Todo.create(payload);
+            return todo;
         } catch (err) {
             next(err);
         }
@@ -37,13 +37,13 @@ class MyListRepository {
 
     static update = async (id, payload) => {
         try {
-            const myList = await MyList.update(payload, {
+            const todo = await Todo.update(payload, {
                 where: {
                     id,
                 },
             });
 
-            return myList;
+            return todo;
         } catch (err) {
             console.log(err);
         }
@@ -51,17 +51,17 @@ class MyListRepository {
 
     static destroy = async (id) => {
         try {
-            const myList = await MyList.destroy({
+            const todo = await Todo.destroy({
                 where: {
                     id,
                 },
             });
 
-            return myList;
+            return todo;
         } catch (err) {
             console.log(err);
         }
     };
 }
 
-module.exports = MyListRepository;
+module.exports = TodoRepository;

@@ -6,8 +6,11 @@ class AuthService {
     static async register(user) {
         try {
             const { name, email, password } = user;
+            // const existingUser = await AuthRepository.findByEmail(email);
+            // if (existingUser) {
+            //     throw { name: "EmailAlreadyExists", message: "Email is already registered" };
+            // }
 
-            // Generate salt and hash password
             const saltRounds = 10;
             const salt = await bcrypt.genSalt(saltRounds);
             const hashedPassword = await bcrypt.hash(password, salt);
@@ -36,7 +39,7 @@ class AuthService {
                 throw { name: "InvalidCredentials" };
             }
 
-            const token = jwt.sign({ userId: user.id }, "secret-key", {
+            const token = jwt.sign({ id_user: user.id }, "secret-key", {
                 expiresIn: "1h",
             });
 

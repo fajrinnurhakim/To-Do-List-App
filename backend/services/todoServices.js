@@ -1,10 +1,10 @@
-const MyListRepository = require("../repositories/myListRepository");
+const TodoRepository = require("../repositories/todoRepository");
 
-class MyListService {
+class TodoService {
     static findAll = async (params, next) => {
         try {
-            const myLists = await MyListRepository.findAll();
-            return myLists;
+            const todos = await TodoRepository.findAll(params);
+            return todos;
         } catch (err) {
             next(err);
         }
@@ -13,8 +13,8 @@ class MyListService {
     static findOne = async (params, next) => {
         try {
             const { id } = params;
-            const myList = await MyListRepository.findOne(id, next);
-            return myList;
+            const todo = await TodoRepository.findOne(id, next);
+            return todo;
         } catch (err) {
             next(err);
         }
@@ -25,7 +25,7 @@ class MyListService {
             const { title, tanggal, start_time, end_time, status, id_user } =
                 params;
 
-            const myList = await MyListRepository.create({
+            const todo = await TodoRepository.create({
                 title,
                 tanggal,
                 start_time,
@@ -33,7 +33,7 @@ class MyListService {
                 status,
                 id_user,
             });
-            return myList;
+            return todo;
         } catch (err) {
             console.log(err);
         }
@@ -54,9 +54,9 @@ class MyListService {
                 id_user,
             };
 
-            const myList = await MyListRepository.update(id, payload);
+            const todo = await TodoRepository.update(id, payload);
 
-            return myList;
+            return todo;
         } catch (err) {
             console.log(err);
         }
@@ -65,13 +65,13 @@ class MyListService {
     static destroy = async (params) => {
         try {
             const { id } = params;
-            const myList = await MyListRepository.destroy(id);
+            const todo = await TodoRepository.destroy(id);
 
-            return myList;
+            return todo;
         } catch (err) {
             console.log(err);
         }
     };
 }
 
-module.exports = MyListService;
+module.exports = TodoService;
