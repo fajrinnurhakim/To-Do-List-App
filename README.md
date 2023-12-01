@@ -9,7 +9,7 @@
 -   Run sequelize db:migrate
 -   Run npm run start to start the website in your local machine
 
-# Backend
+# Frontend
 -   Clone the repository.
 -   Make sure you have installed Node.js v18.16.0 or above.
 -   Make sure you have npm installed.
