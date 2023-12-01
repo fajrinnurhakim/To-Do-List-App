@@ -4,6 +4,7 @@ import Register from "./pages/register";
 import NavbarTop from "./components/Navbar";
 import TodoList from "./pages/todolist";
 import CreateTodo from "./pages/createTodo";
+import PrivateRoute from "./routes/PrivateRoutes";
 import "./index.css";
 
 function App() {
@@ -31,8 +32,10 @@ function App() {
                         path="/home"
                         element={
                             <>
-                                <NavbarTop />
-                                <TodoList />
+                                <PrivateRoute>
+                                    <NavbarTop />
+                                    <TodoList />
+                                </PrivateRoute>
                             </>
                         }
                     />
@@ -40,8 +43,10 @@ function App() {
                         path="/create"
                         element={
                             <>
-                                <NavbarTop />
-                                <CreateTodo />
+                                <PrivateRoute>
+                                    <NavbarTop />
+                                    <CreateTodo />
+                                </PrivateRoute>
                             </>
                         }
                     />

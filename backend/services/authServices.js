@@ -6,15 +6,9 @@ class AuthService {
     static async register(user) {
         try {
             const { name, email, password } = user;
-            // const existingUser = await AuthRepository.findByEmail(email);
-            // if (existingUser) {
-            //     throw { name: "EmailAlreadyExists", message: "Email is already registered" };
-            // }
-
             const saltRounds = 10;
             const salt = await bcrypt.genSalt(saltRounds);
             const hashedPassword = await bcrypt.hash(password, salt);
-
             const newUser = await AuthRepository.create({
                 name,
                 email,

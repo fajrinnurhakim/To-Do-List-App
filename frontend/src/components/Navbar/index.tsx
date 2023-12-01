@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import {
     Button,
     Navbar,
@@ -19,7 +20,15 @@ const NavbarTop = () => {
                 </span>
             </NavbarBrand>
             <div className="flex space-x-2 md:order-2">
-                <Button color="purple">Logout</Button>
+                <Button
+                    color="purple"
+                    onClick={() => {
+                        Cookies.remove("token");
+                        window.location.href = "/";
+                    }}
+                >
+                    Logout
+                </Button>
                 <NavbarToggle />
             </div>
             <NavbarCollapse color="purple">

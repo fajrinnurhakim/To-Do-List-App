@@ -24,6 +24,7 @@ export const loginUser = async (email: string, password: string) => {
         Cookies.set("token", token);
 
         console.log("Login successful");
+        window.location.href = "/home";
     } catch (error) {
         console.error("Error during login:", error);
     }
@@ -43,7 +44,7 @@ export const registerUser = async (
                 password,
             }
         );
-
+        window.location.href = "/";
         return response.data;
     } catch (error) {
         console.error("Error during registration:", error);
@@ -52,8 +53,13 @@ export const registerUser = async (
 };
 
 export const getTodos = async () => {
+    const token = Cookies.get("token");
     try {
-        const response = await axios.get("http://localhost:3000/todos");
+        const response = await axios.get("http://localhost:3000/todos", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
         return response.data;
     } catch (error) {
@@ -63,8 +69,13 @@ export const getTodos = async () => {
 };
 
 export const getTodoById = async (id: string) => {
+    const token = Cookies.get("token");
     try {
-        const response = await axios.get(`http://localhost:3000/todos/${id}`);
+        const response = await axios.get(`http://localhost:3000/todos/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
         return response.data;
     } catch (error) {
@@ -80,19 +91,26 @@ export const createTodo = async (
     end_time: string,
     status: boolean
 ) => {
+    const token = Cookies.get("token");
     try {
-        const response = await axios.post("http://localhost:3000/todos", {
-            title,
-            tanggal,
-            start_time,
-            end_time,
-            status,
-        });
-
-        // Successful response
+        const response = await axios.post(
+            "http://localhost:3000/todos",
+            {
+                title,
+                tanggal,
+                start_time,
+                end_time,
+                status,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        window.location.href = "/home";
         return response.data;
     } catch (error) {
-        // Handle network errors or any other errors
         console.error("Error while creating todo:", error);
         throw error;
     }
@@ -106,19 +124,26 @@ export const updateTodo = async (
     end_time: string,
     status: boolean
 ) => {
+    const token = Cookies.get("token");
     try {
-        const response = await axios.put(`http://localhost:3000/todos/${id}`, {
-            title,
-            tanggal,
-            start_time,
-            end_time,
-            status,
-        });
+        const response = await axios.put(
+            `http://localhost:3000/todos/${id}`,
+            {
+                title,
+                tanggal,
+                start_time,
+                end_time,
+                status,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
 
-        // Successful response
         return response.data;
     } catch (error) {
-        // Handle network errors or any other errors
         console.error(`Error while updating todo with ID ${id}:`, error);
         throw error;
     }
@@ -126,10 +151,16 @@ export const updateTodo = async (
 
 export const deleteTodo = async (id: string) => {
     try {
+        const token = Cookies.get("token");
         const response = await axios.delete(
-            `http://localhost:3000/todos/${id}`
+            `http://localhost:3000/todos/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
         );
-
+        console.log("Delete Success");
         return response.data;
     } catch (error) {
         console.error(`Error while deleting todo with ID ${id}:`, error);

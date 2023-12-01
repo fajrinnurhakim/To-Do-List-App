@@ -1,11 +1,35 @@
+import { FormEvent, useState } from "react";
 import { Card, Label, TextInput, Checkbox, Button } from "flowbite-react";
+import { registerUser } from "../../utils/fetch";
 
 const RegisterForm = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [agreed, setAgreed] = useState(false);
+
+    const handleRegister = async (e: FormEvent) => {
+        e.preventDefault();
+
+        try {
+            if (!agreed) {
+                throw new Error("Please agree to the Terms & Conditions.");
+            }
+
+            await registerUser(name, email, password);
+        } catch (error) {
+            console.error("Error during registration:", error);
+        }
+    };
+
     return (
         <>
             <div className="flex items-center justify-center w-screen h-screen">
                 <Card className="h-auto w-80">
-                    <form className="flex flex-col gap-4">
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleRegister}
+                    >
                         <div>
                             <div className="block mb-2">
                                 <Label htmlFor="name1" value="Name" />
@@ -15,6 +39,8 @@ const RegisterForm = () => {
                                 type="text"
                                 placeholder="Your name"
                                 required
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
                         <div>
@@ -26,6 +52,8 @@ const RegisterForm = () => {
                                 type="email"
                                 placeholder="name@yourmail.com"
                                 required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div>
@@ -39,10 +67,16 @@ const RegisterForm = () => {
                                 id="password1"
                                 type="password"
                                 required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox id="term" />
+                            <Checkbox
+                                id="term"
+                                checked={agreed}
+                                onChange={(e) => setAgreed(e.target.checked)}
+                            />
                             <Label htmlFor="term">
                                 I read and agree to{" "}
                                 <span className="text-blue-700">
