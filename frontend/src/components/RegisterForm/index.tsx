@@ -1,22 +1,30 @@
 import { FormEvent, useState } from "react";
 import { Card, Label, TextInput, Checkbox, Button } from "flowbite-react";
 import { registerUser } from "../../utils/fetch";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const RegisterForm = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [agreed, setAgreed] = useState(false);
+    const navigate = useNavigate();
 
     const handleRegister = async (e: FormEvent) => {
         e.preventDefault();
 
         try {
             if (!agreed) {
-                throw new Error("Please agree to the Terms & Conditions.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Error...",
+                    text: "Please agree to the Terms & Conditions.",
+                });
+            } else {
+                await registerUser(name, email, password);
+                navigate("/");
             }
-
-            await registerUser(name, email, password);
         } catch (error) {
             console.error("Error during registration:", error);
         }

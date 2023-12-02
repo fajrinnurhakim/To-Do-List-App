@@ -4,6 +4,7 @@ class TodoService {
     static findAll = async (params, next) => {
         try {
             const todos = await TodoRepository.findAll(params);
+
             return todos;
         } catch (err) {
             next(err);
@@ -14,6 +15,7 @@ class TodoService {
         try {
             const { id } = params;
             const todo = await TodoRepository.findOne(id, next);
+
             return todo;
         } catch (err) {
             next(err);
@@ -42,7 +44,6 @@ class TodoService {
     static update = async (pathParams, params) => {
         try {
             const { id } = pathParams;
-
             const { title, tanggal, start_time, end_time, status, id_user } =
                 params;
             let payload = {
@@ -53,7 +54,6 @@ class TodoService {
                 status,
                 id_user,
             };
-
             const todo = await TodoRepository.update(id, payload);
 
             return todo;

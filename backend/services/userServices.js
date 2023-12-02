@@ -4,6 +4,7 @@ class UserService {
     static findAll = async (params, next) => {
         try {
             const users = await UserRepository.findAll();
+
             return users;
         } catch (err) {
             next(err);
@@ -14,6 +15,7 @@ class UserService {
         try {
             const { id } = params;
             const user = await UserRepository.findOne(id, next);
+
             return user;
         } catch (err) {
             next(err);
@@ -29,6 +31,7 @@ class UserService {
                 email,
                 password,
             });
+
             return user;
         } catch (err) {
             console.log(err);

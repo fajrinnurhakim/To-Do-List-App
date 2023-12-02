@@ -7,10 +7,12 @@ import {
     NavbarLink,
     NavbarToggle,
 } from "flowbite-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const NavbarTop = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     return (
         <Navbar rounded className="container mx-auto">
@@ -24,7 +26,12 @@ const NavbarTop = () => {
                     color="purple"
                     onClick={() => {
                         Cookies.remove("token");
-                        window.location.href = "/";
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success...",
+                            text: "Logout Account Successfully!",
+                        });
+                        navigate("/");
                     }}
                 >
                     Logout

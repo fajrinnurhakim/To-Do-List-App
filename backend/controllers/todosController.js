@@ -42,6 +42,7 @@ class TodoController {
     static update = async (req, res, next) => {
         try {
             const mylist = await TodoService.update(req.params, req.body);
+
             res.status(200).json({ message: "Todo updated successfully" });
         } catch (err) {
             next(err);

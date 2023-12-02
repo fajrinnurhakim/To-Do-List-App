@@ -1,6 +1,7 @@
 import { useState, FormEvent } from "react";
 import { Card, Label, TextInput, Button, Select } from "flowbite-react";
 import { createTodo } from "../../utils/fetch";
+import { useNavigate } from "react-router-dom";
 
 const TodoForm = () => {
     const [title, setTitle] = useState("");
@@ -8,6 +9,7 @@ const TodoForm = () => {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [status, setStatus] = useState("default");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -27,7 +29,7 @@ const TodoForm = () => {
             setEndTime("");
             setStatus("default");
 
-            console.log("Todo created successfully");
+            navigate("/home");
         } catch (error) {
             console.error("Error creating todo:", error);
         }

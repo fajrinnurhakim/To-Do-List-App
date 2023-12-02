@@ -4,6 +4,7 @@ class UserRepository {
     static findAll = async (params, next) => {
         try {
             const users = await User.findAll();
+
             return users;
         } catch (err) {
             next(err);
@@ -17,9 +18,11 @@ class UserRepository {
                     id,
                 },
             });
+
             if (!user) {
                 throw { name: "ErrorNotFound" };
             }
+
             return user;
         } catch (err) {
             next(err);
@@ -29,6 +32,7 @@ class UserRepository {
     static create = async (payload) => {
         try {
             const user = await User.create(payload);
+
             return user;
         } catch (err) {
             next(err);

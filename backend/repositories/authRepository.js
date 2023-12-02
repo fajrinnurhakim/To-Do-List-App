@@ -22,6 +22,7 @@ class AuthRepository {
     static async create(user) {
         try {
             const newUser = await User.create(user);
+
             return newUser;
         } catch (err) {
             throw err;

@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import axios, { AxiosResponse } from "axios";
+import Swal from "sweetalert2";
 
 interface LoginResponse {
     token: string;
@@ -23,10 +24,17 @@ export const loginUser = async (email: string, password: string) => {
 
         Cookies.set("token", token);
 
-        console.log("Login successful");
-        window.location.href = "/home";
+        Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: "Login Account Successfully!",
+        });
     } catch (error) {
-        console.error("Error during login:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error during login: ${error}`,
+        });
     }
 };
 
@@ -44,11 +52,18 @@ export const registerUser = async (
                 password,
             }
         );
-        window.location.href = "/";
+        Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: "Register Account Successfully!",
+        });
         return response.data;
     } catch (error) {
-        console.error("Error during registration:", error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error during Registration: ${error}`,
+        });
     }
 };
 
@@ -63,8 +78,11 @@ export const getTodos = async () => {
 
         return response.data;
     } catch (error) {
-        console.error("Error while fetching todos:", error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error while fetching todos: ${error}`,
+        });
     }
 };
 
@@ -79,8 +97,11 @@ export const getTodoById = async (id: string) => {
 
         return response.data;
     } catch (error) {
-        console.error(`Error while fetching todo with ID ${id}:`, error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error while fetching todo with ID ${id}: ${error}`,
+        });
     }
 };
 
@@ -108,21 +129,28 @@ export const createTodo = async (
                 },
             }
         );
-        window.location.href = "/home";
+        Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: "Create Todo Successfully!",
+        });
         return response.data;
     } catch (error) {
-        console.error("Error while creating todo:", error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error while creating todo: ${error}`,
+        });
     }
 };
 
 export const updateTodo = async (
     id: string,
     title: string,
-    tanggal: Date,
+    tanggal: string,
     start_time: string,
     end_time: string,
-    status: boolean
+    status: string
 ) => {
     const token = Cookies.get("token");
     try {
@@ -141,11 +169,18 @@ export const updateTodo = async (
                 },
             }
         );
-
+        Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: "Update Todo Successfully!",
+        });
         return response.data;
     } catch (error) {
-        console.error(`Error while updating todo with ID ${id}:`, error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error while updating todo: ${error}`,
+        });
     }
 };
 
@@ -160,10 +195,17 @@ export const deleteTodo = async (id: string) => {
                 },
             }
         );
-        console.log("Delete Success");
+        Swal.fire({
+            icon: "success",
+            title: "Success...",
+            text: "Delete Todo Successfully!",
+        });
         return response.data;
     } catch (error) {
-        console.error(`Error while deleting todo with ID ${id}:`, error);
-        throw error;
+        Swal.fire({
+            icon: "error",
+            title: "Error...",
+            text: `Error while Deleting todo: ${error}`,
+        });
     }
 };

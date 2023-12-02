@@ -1,17 +1,19 @@
-import { Card, Label, TextInput, Checkbox, Button } from "flowbite-react";
+import { Card, Label, TextInput, Button } from "flowbite-react";
 import { loginUser } from "../../utils/fetch";
 import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault();
 
         try {
             await loginUser(email, password);
-            console.log("Login successful");
+            navigate("/home");
         } catch (error) {
             console.error("Login failed:", error);
         }
@@ -53,10 +55,7 @@ const LoginForm = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Checkbox id="remember" />
-                            <Label htmlFor="remember">Remember me</Label>
-                        </div>
+
                         <Button type="submit" color="purple">
                             Login
                         </Button>
