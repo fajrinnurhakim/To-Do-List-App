@@ -9,6 +9,7 @@ const config = {
         dialect: "postgres",
         port: 5432,
     },
+    // connectionString: process.env.POSTGRES_URL + "?sslmode=require",
 };
 
 module.exports = config;

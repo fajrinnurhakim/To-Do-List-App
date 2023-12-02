@@ -45,7 +45,8 @@ const TodoForm = () => {
                     >
                         <div>
                             <div className="block mb-2">
-                                <Label htmlFor="title" value="Title" />
+                                <Label htmlFor="title" value="Title" />{" "}
+                                <span className="text-red-600">*</span>
                             </div>
                             <TextInput
                                 id="title"
@@ -58,7 +59,8 @@ const TodoForm = () => {
                         </div>
                         <div>
                             <div className="block mb-2">
-                                <Label htmlFor="tanggal" value="Tanggal" />
+                                <Label htmlFor="tanggal" value="Tanggal" />{" "}
+                                <span className="text-red-600">*</span>
                             </div>
                             <TextInput
                                 id="tanggal"
@@ -74,7 +76,8 @@ const TodoForm = () => {
                                     <Label
                                         htmlFor="start_time"
                                         value="Start Time"
-                                    />
+                                    />{" "}
+                                    <span className="text-red-600">*</span>
                                 </div>
                                 <TextInput
                                     id="start_time"
@@ -91,7 +94,8 @@ const TodoForm = () => {
                                     <Label
                                         htmlFor="end_time"
                                         value="End Time"
-                                    />
+                                    />{" "}
+                                    <span className="text-red-600">*</span>
                                 </div>
                                 <TextInput
                                     id="end_time"
@@ -104,7 +108,8 @@ const TodoForm = () => {
                         </div>
                         <div>
                             <div className="block mb-2">
-                                <Label htmlFor="status" value="Select Status" />
+                                <Label htmlFor="status" value="Select Status" />{" "}
+                                <span className="text-red-600">*</span>
                             </div>
                             <Select
                                 id="status"

@@ -28,6 +28,13 @@ const LoginForm = () => {
                         onSubmit={handleLogin}
                     >
                         <div>
+                            <img
+                                src="src/assets/login.svg"
+                                alt="login"
+                                className="w-7/12 mx-auto"
+                            />
+                        </div>
+                        <div>
                             <div className="block mb-2">
                                 <Label htmlFor="email1" value="Email" />
                             </div>
