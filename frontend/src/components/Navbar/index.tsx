@@ -47,7 +47,7 @@ const NavbarTop = () => {
                             Swal.fire({
                                 icon: "success",
                                 title: "Success...",
-                                text: "Logout Account Successfully!!",
+                                text: "Logout Account Successfully!",
                             });
                             navigate("/");
                         }}
