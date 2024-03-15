@@ -9,7 +9,7 @@ interface LoginResponse {
 export const loginUser = async (email: string, password: string) => {
     try {
         const response: AxiosResponse<LoginResponse> = await axios.post(
-            "http://localhost:3000/auth/login",
+            "http://localhost:5000/auth/login",
             {
                 email,
                 password,
@@ -45,7 +45,7 @@ export const registerUser = async (
 ) => {
     try {
         const response = await axios.post(
-            "http://localhost:3000/auth/register",
+            "http://localhost:5000/auth/register",
             {
                 name,
                 email,
@@ -70,7 +70,7 @@ export const registerUser = async (
 export const getTodos = async () => {
     const token = Cookies.get("token");
     try {
-        const response = await axios.get("http://localhost:3000/todos", {
+        const response = await axios.get("http://localhost:5000/todos", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -89,7 +89,7 @@ export const getTodos = async () => {
 export const getTodoById = async (id: string) => {
     const token = Cookies.get("token");
     try {
-        const response = await axios.get(`http://localhost:3000/todos/${id}`, {
+        const response = await axios.get(`http://localhost:5000/todos/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -115,7 +115,7 @@ export const createTodo = async (
     const token = Cookies.get("token");
     try {
         const response = await axios.post(
-            "http://localhost:3000/todos",
+            "http://localhost:5000/todos",
             {
                 title,
                 tanggal,
@@ -155,7 +155,7 @@ export const updateTodo = async (
     const token = Cookies.get("token");
     try {
         const response = await axios.put(
-            `http://localhost:3000/todos/${id}`,
+            `http://localhost:5000/todos/${id}`,
             {
                 title,
                 tanggal,
@@ -188,7 +188,7 @@ export const deleteTodo = async (id: string) => {
     try {
         const token = Cookies.get("token");
         const response = await axios.delete(
-            `http://localhost:3000/todos/${id}`,
+            `http://localhost:5000/todos/${id}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
