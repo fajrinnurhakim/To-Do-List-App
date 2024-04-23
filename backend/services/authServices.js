@@ -5,7 +5,7 @@ const AuthRepository = require("../repositories/authRepository");
 class AuthService {
     static async register(user) {
         try {
-            const { name, email, password } = user;
+            const { name, email, password, image } = user;
             const saltRounds = 10;
             const salt = await bcrypt.genSalt(saltRounds);
             const hashedPassword = await bcrypt.hash(password, salt);
@@ -13,6 +13,7 @@ class AuthService {
                 name,
                 email,
                 password: hashedPassword,
+                image,
             });
 
             return newUser;

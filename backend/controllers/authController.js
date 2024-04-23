@@ -1,9 +1,20 @@
 const AuthService = require("../services/authServices");
+const upload = require("../middlewares/multer");
+const cloudinary = require("../utils/cloudinary");
 
 class AuthController {
     static async register(req, res, next) {
         try {
-            const user = await AuthService.register(req.body);
+            const { name, email, password } = req.body;
+            const image = req.file.path;
+            const result = await cloudinary.uploader.upload(image);
+            const imageUrl = result.secure_url;
+            const user = await AuthService.register({
+                name,
+                email,
+                password,
+                image: imageUrl,
+            });
             res.status(201).json({
                 message: "User registered successfully",
                 user,
