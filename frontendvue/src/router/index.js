@@ -15,11 +15,6 @@ const routes = [
         name: "Dashboard",
         component: () => import("../views/Dashboard.vue"),
     },
-    {
-        path: "/dashboard/createtodo",
-        name: "CreateTodo",
-        component: () => import("../views/CreateTodo.vue"),
-    },
 ];
 
 const router = createRouter({

@@ -1,6 +1,8 @@
 <template>
     <section id="home" class="flex h-screen bg-base-100">
-        <div class="flex items-center justify-center w-3/6 h-screen bg-primary">
+        <div
+            class="items-center justify-center hidden w-3/6 h-screen bg-primary lg:inline-flex"
+        >
             <div
                 class="flex flex-col items-center w-4/6 p-5 space-y-10 text-center"
             >
@@ -23,7 +25,7 @@
                 </p>
             </div>
         </div>
-        <div class="flex items-center justify-center w-3/6 h-screen">
+        <div class="flex items-center justify-center w-full h-screen lg:w-3/6">
             <div class="w-4/6 space-y-2 flex-column">
                 <p class="text-xl text-center">Register Your Account</p>
                 <label class="form-control"
