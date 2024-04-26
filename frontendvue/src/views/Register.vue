@@ -25,7 +25,7 @@
         </div>
         <div class="flex items-center justify-center w-3/6 h-screen">
             <div class="w-4/6 space-y-2 flex-column">
-                <p class="text-xl text-center">Login To Your Account</p>
+                <p class="text-xl text-center">Register Your Account</p>
                 <label class="form-control"
                     ><div>
                         <label class="label" for="email"
@@ -56,6 +56,49 @@
                             id="email"
                         />
                     </label>
+                </label>
+                <label class="form-control"
+                    ><div>
+                        <label class="label" for="username"
+                            ><span class="label-text">Username</span></label
+                        >
+                    </div>
+                    <label
+                        class="flex items-center gap-2 input input-bordered input-primary"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            class="w-4 h-4 opacity-70"
+                        >
+                            <path
+                                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"
+                            />
+                        </svg>
+                        <input
+                            type="text"
+                            class="grow"
+                            placeholder="Username"
+                            name="username"
+                            id="username"
+                        />
+                    </label>
+                </label>
+
+                <label class="form-control">
+                    <div>
+                        <label class="label" for="image">
+                            <span class="label-text">Image</span>
+                        </label>
+                    </div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        class="w-full file-input file-input-primary file-input-bordered"
+                        name="image"
+                        id="image"
+                    />
                 </label>
 
                 <label class="form-control">
@@ -98,14 +141,15 @@
                             name="checkbox"
                         />
                     </label>
-                    <label class="label-text" for="checkbox">Remember Me</label>
+                    <label class="label-text" for="checkbox">
+                        I agree to the Terms and Conditions
+                    </label>
                 </div>
 
-                <button class="w-full btn btn-primary">LOGIN</button>
-
+                <button class="w-full btn btn-primary">REGISTER</button>
                 <p class="text-center">
-                    <span>Don`t have an account?</span>
-                    <router-link to="/register">Register</router-link>
+                    <span>Do you have an Account?</span>
+                    <router-link to="/">Login</router-link>
                 </p>
             </div>
         </div>
