@@ -1,4 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Cookies from "js-cookie";
+
+const isAuthenticated = () => {
+    return Cookies.get("token") !== undefined;
+};
+
 const routes = [
     {
         path: "/",
@@ -14,6 +20,13 @@ const routes = [
         path: "/dashboard",
         name: "Dashboard",
         component: () => import("../views/Dashboard.vue"),
+        beforeEnter: (to, from, next) => {
+            if (isAuthenticated()) {
+                next();
+            } else {
+                next("/");
+            }
+        },
     },
 ];
 

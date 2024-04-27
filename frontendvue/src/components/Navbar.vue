@@ -2,7 +2,13 @@
     <div class="w-full shadow-md">
         <div class="container mx-auto navbar bg-base-100">
             <div class="navbar-start">
-                <a class="text-xl btn btn-ghost">Todolist App</a>
+                <a class="text-xl btn btn-ghost"
+                    ><img
+                        src="https://static-00.iconduck.com/assets.00/todo-icon-1024x1024-7nszgsj6.png"
+                        alt="logo"
+                        class="w-8 h-8"
+                    />Todolist App</a
+                >
             </div>
             <div class="navbar-end">
                 <label
@@ -10,9 +16,9 @@
                     aria-label="open sidebar"
                     class="btn btn-circle btn-ghost"
                     ><img
-                        src="https://static-00.iconduck.com/assets.00/todo-icon-1024x1024-7nszgsj6.png"
-                        alt="images"
-                        class="w-8 h-8"
+                        :src="user.image"
+                        alt="profile"
+                        class="w-full h-full"
                     />
                 </label>
             </div>
@@ -20,30 +26,23 @@
         <div class="drawer-end bg-red-50">
             <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
             <div class="drawer-side">
-                <ul class="w-full min-h-full p-4 menu bg-base-100">
-                    <div class="flex items-center justify-between">
-                        <a
-                            href="/"
-                            class="flex text-xl btn btn-ghost lg:hidden"
-                        >
+                <ul class="z-10 w-full min-h-full p-4 menu bg-base-100">
+                    <div class="flex items-center justify-center">
+                        <a href="/" class="flex text-xl btn btn-ghost">
                             <span
-                                v-for="(profile, index) in profiles"
-                                :key="index"
-                            >
-                                <img
-                                    :src="profile.image"
-                                    alt="image"
-                                    class="w-5 h-6"
-                                />
-                            </span>
-                            Fajrin Nurhakim
+                                ><img
+                                    :src="user.image"
+                                    alt="profile"
+                                    class="w-8 h-8"
+                            /></span>
+                            {{ user.name }}
                         </a>
                     </div>
                     <li>
-                        <router-link to="/">
+                        <a href="/" @click="logout">
                             <i class="fa-solid fa-right-from-bracket"></i>
                             Logout
-                        </router-link>
+                        </a>
                     </li>
                     <li>
                         <label
@@ -61,5 +60,18 @@
 </template>
 
 <script>
-export default {};
+import Cookies from "js-cookie";
+export default {
+    data() {
+        return {
+            user: JSON.parse(Cookies.get("user")),
+        };
+    },
+    methods: {
+        logout() {
+            Cookies.remove("token");
+            Cookies.remove("user");
+        },
+    },
+};
 </script>
