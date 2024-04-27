@@ -1,6 +1,6 @@
 <template>
     <Navbar />
-    <div class="container p-5 mx-auto my-5 space-y-5">
+    <div class="container px-5 py-5 mx-auto space-y-5">
         <div class="flex space-x-2">
             <label class="w-full form-control">
                 <label
@@ -9,7 +9,9 @@
                     <input type="date" class="grow" name="date" id="date" />
                 </label>
             </label>
-            <button class="btn btn-success">Create Todo</button>
+            <button @click="openModal" class="btn btn-success">
+                Create Todo
+            </button>
         </div>
 
         <div class="space-y-5">
@@ -42,6 +44,81 @@
             </div>
         </div>
     </div>
+    <div
+        v-if="isModalOpen"
+        class="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+    >
+        <div class="p-4 space-y-2 rounded-lg bg-base-300 w-80 md:w-96 card">
+            <label class="w-full form-control">
+                <div class="label" for="title">
+                    <span class="label-text">Title</span>
+                </div>
+                <input
+                    v-model="newTodo.title"
+                    name="title"
+                    id="title"
+                    type="text"
+                    placeholder="Type here"
+                    class="w-full input input-bordered"
+                />
+            </label>
+            <label class="w-full form-control">
+                <div class="label" for="tanggal">
+                    <span class="label-text">Date</span>
+                </div>
+                <input
+                    v-model="newTodo.tanggal"
+                    name="tanggal"
+                    id="tanggal"
+                    type="date"
+                    class="w-full input input-bordered"
+                />
+            </label>
+            <div class="flex">
+                <label class="w-1/2 form-control">
+                    <div class="label" for="start-time">
+                        <span class="label-text">Start Time</span>
+                    </div>
+                    <input
+                        v-model="newTodo.start_time"
+                        name="start-time"
+                        id="start-time"
+                        type="time"
+                        class="w-full input input-bordered"
+                    />
+                </label>
+                <label class="w-1/2 form-control">
+                    <div class="label" for="end-time">
+                        <span class="label-text">End Time</span>
+                    </div>
+                    <input
+                        v-model="newTodo.end_time"
+                        name="end-time"
+                        id="end-time"
+                        type="time"
+                        class="w-full input input-bordered"
+                    />
+                </label>
+            </div>
+
+            <label class="w-full form-control">
+                <div class="label">
+                    <span class="label-text">Status</span>
+                </div>
+                <select v-model="newTodo.status" class="select select-bordered">
+                    <option disabled selected>Pick one</option>
+                    <option value="true">Finished</option>
+                    <option value="false">Unfinished</option>
+                </select>
+            </label>
+            <button @click="createTodo" class="btn btn-success">
+                Create Todo
+            </button>
+            <button @click="closeModal" class="w-full btn btn-square">
+                Close
+            </button>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -56,6 +133,14 @@ export default {
     data() {
         return {
             todos: [],
+            newTodo: {
+                title: "",
+                tanggal: "",
+                start_time: "",
+                end_time: "",
+                status: "",
+            },
+            isModalOpen: false,
         };
     },
     mounted() {
@@ -78,8 +163,38 @@ export default {
                 console.error("Error fetching todos:", error);
             }
         },
+        async createTodo() {
+            const token = Cookies.get("token");
+            try {
+                const response = await axios.post(
+                    "http://localhost:3000/todos",
+                    this.newTodo,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                this.todos.push(response.data);
+                this.newTodo = {
+                    title: "",
+                    tanggal: "",
+                    start_time: "",
+                    end_time: "",
+                    status: "",
+                };
+            } catch (error) {
+                console.error("Error creating todo:", error);
+            }
+        },
         getTodoStatusClass(status) {
             return status ? "bg-green-700" : "bg-red-700";
+        },
+        openModal() {
+            this.isModalOpen = true;
+        },
+        closeModal() {
+            this.isModalOpen = false;
         },
     },
 };
