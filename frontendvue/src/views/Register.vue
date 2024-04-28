@@ -27,6 +27,13 @@
         </div>
         <div class="flex items-center justify-center w-full h-screen lg:w-3/6">
             <div class="w-4/6 space-y-2 flex-column">
+                <div class="flex justify-center w-full lg:hidden">
+                    <img
+                        src="https://static-00.iconduck.com/assets.00/todo-icon-1024x1024-7nszgsj6.png"
+                        alt="logo"
+                        class="w-24 h-24 p-5 bg-white rounded-2xl"
+                    />
+                </div>
                 <p class="text-xl text-center">Register Your Account</p>
                 <label class="form-control"
                     ><div>
@@ -44,6 +51,7 @@
                             name="email"
                             id="email"
                             v-model="email"
+                            required
                         />
                     </label>
                 </label>
@@ -64,6 +72,7 @@
                             name="username"
                             id="username"
                             v-model="name"
+                            required
                         />
                     </label>
                 </label>
@@ -81,6 +90,7 @@
                         name="image"
                         id="image"
                         @change="handleFileUpload"
+                        required
                     />
                 </label>
 
@@ -101,6 +111,7 @@
                             name="password"
                             id="password"
                             v-model="password"
+                            required
                         />
                     </label>
                 </label>
@@ -123,7 +134,9 @@
                 <button
                     class="w-full btn btn-primary"
                     @click="registerUser"
-                    :disabled="!agreedToTerms"
+                    :disabled="
+                        !agreedToTerms || !name || !email || !password || !image
+                    "
                 >
                     REGISTER
                 </button>
@@ -133,9 +146,9 @@
                 </p>
             </div>
         </div>
-        <div class="toast">
-            <div class="alert alert-info" v-if="showToast">
-                <span>{{ toastMessage }}</span>
+        <div class="toast toast-center toast-middle">
+            <div class="alert alert-info" v-if="showToastSuccess">
+                <span>{{ toastMessageSuccess }}</span>
             </div>
         </div>
     </section>
@@ -152,8 +165,8 @@ export default {
             email: "",
             password: "",
             agreedToTerms: false,
-            showToast: false,
-            toastMessage: "",
+            showToastSuccess: false,
+            toastMessageSuccess: "",
         };
     },
     methods: {
@@ -174,9 +187,9 @@ export default {
                         },
                     }
                 );
-                this.showToast = true;
-                this.toastMessage = "Registration successful";
-                console.log("Registration successful:", response.data);
+                this.showToastSuccess = true;
+                this.toastMessageSuccess = "Registration successful";
+                window.location.href = "/";
             } catch (error) {
                 console.error("Error registering user:", error);
             }

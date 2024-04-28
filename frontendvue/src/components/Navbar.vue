@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full shadow-md">
+    <div class="fixed top-0 w-full shadow-md end-0 start-0">
         <div class="container mx-auto navbar bg-base-100">
             <div class="navbar-start">
                 <a class="text-xl btn btn-ghost"
@@ -56,6 +56,11 @@
                 </ul>
             </div>
         </div>
+        <div class="toast toast-center toast-middle">
+            <div class="alert alert-info" v-if="showToastSuccess">
+                <span>{{ toastMessageSuccess }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -65,10 +70,17 @@ export default {
     data() {
         return {
             user: JSON.parse(Cookies.get("user")),
+            showToastSuccess: false,
+            toastMessageSuccess: "",
         };
     },
     methods: {
         logout() {
+            this.showToastSuccess = true;
+            this.toastMessageSuccess = "Logout successful";
+            setTimeout(() => {
+                this.showToastSuccess = false;
+            }, 1000);
             Cookies.remove("token");
             Cookies.remove("user");
         },

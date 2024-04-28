@@ -32,11 +32,17 @@ class AuthService {
                 throw { name: "InvalidCredentials" };
             }
 
-            const token = jwt.sign({ id_user: user.id }, "secret-key", {
-                expiresIn: "1h",
-            });
+            const token = jwt.sign(
+                {
+                    id_user: user.id,
+                },
+                "secret-key",
+                {
+                    expiresIn: "1h",
+                }
+            );
 
-            return token;
+            return { token, user };
         } catch (err) {
             throw err;
         }

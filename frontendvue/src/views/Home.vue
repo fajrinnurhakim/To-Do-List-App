@@ -27,6 +27,13 @@
         </div>
         <div class="flex items-center justify-center w-full h-screen lg:w-3/6">
             <div class="w-4/6 space-y-2 flex-column">
+                <div class="flex justify-center w-full lg:hidden">
+                    <img
+                        src="https://static-00.iconduck.com/assets.00/todo-icon-1024x1024-7nszgsj6.png"
+                        alt="logo"
+                        class="w-24 h-24 p-5 bg-white rounded-2xl"
+                    />
+                </div>
                 <p class="text-xl text-center">Login To Your Account</p>
                 <label class="form-control">
                     <div>
@@ -45,6 +52,7 @@
                             name="email"
                             id="email"
                             v-model="email"
+                            required
                         />
                     </label>
                 </label>
@@ -66,6 +74,7 @@
                             name="password"
                             id="password"
                             v-model="password"
+                            required
                         />
                     </label>
                 </label>
@@ -86,7 +95,11 @@
                     </label>
                 </div>
 
-                <button class="w-full btn btn-primary" @click="handleLogin">
+                <button
+                    class="w-full btn btn-primary"
+                    @click="handleLogin"
+                    :disabled="!email || !password"
+                >
                     LOGIN
                 </button>
 
@@ -94,6 +107,16 @@
                     <span>Don't have an account?</span>
                     <router-link to="/register">Register</router-link>
                 </p>
+            </div>
+        </div>
+        <div class="toast toast-center toast-middle">
+            <div class="alert alert-info" v-if="showToastSuccess">
+                <span>{{ toastMessageSuccess }}</span>
+            </div>
+        </div>
+        <div class="toast toast-center toast-middle">
+            <div class="alert alert-error" v-if="showToastError">
+                <span>{{ toastMessageError }}</span>
             </div>
         </div>
     </section>
@@ -109,6 +132,10 @@ export default {
             email: "",
             password: "",
             rememberMe: true,
+            showToastSuccess: false,
+            showToastError: false,
+            toastMessageSuccess: "",
+            toastMessageError: "",
         };
     },
     methods: {
@@ -133,13 +160,26 @@ export default {
                         secure: true,
                         sameSite: "lax",
                     });
-                    this.$router.push("/dashboard");
+                    this.showToastSuccess = true;
+                    this.toastMessageSuccess = "Login successful";
+                    setTimeout(() => {
+                        this.showToastSuccess = false;
+                    }, 1000);
+                    window.location.href = "/dashboard";
                 } else {
-                    this.$toast.error(data.error);
+                    this.showToastError = true;
+                    this.toastMessageError = "Login Error";
+                    setTimeout(() => {
+                        this.showToastError = false;
+                    }, 1000);
                 }
             } catch (error) {
-                console.error("Login error:", error);
-                this.$toast.error("An error occurred during login.");
+                this.showToastError = true;
+                this.toastMessageError =
+                    ("An error occurred during login.", error);
+                setTimeout(() => {
+                    this.showToastError = false;
+                }, 1000);
             }
         },
     },

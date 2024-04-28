@@ -1,15 +1,22 @@
 <template>
     <Navbar />
-    <div class="container px-5 py-5 mx-auto space-y-5">
+    <div class="container px-5 py-5 mx-auto my-16 space-y-5">
         <div class="flex space-x-2">
             <label class="w-full form-control">
                 <label
                     class="flex items-center gap-2 input input-bordered input-primary"
                 >
-                    <input type="date" class="grow" name="date" id="date" />
+                    <input
+                        type="date"
+                        class="grow"
+                        name="filterDate"
+                        id="filterDate"
+                        v-model="filterDate"
+                        @change="applyDateFilter"
+                    />
                 </label>
             </label>
-            <button @click="openModal" class="btn btn-success">
+            <button @click="openModalForCreate" class="btn btn-success">
                 Create Todo
             </button>
         </div>
@@ -17,7 +24,7 @@
         <div class="space-y-5">
             <div
                 class="flex flex-row justify-between shadow-md rounded-s-lg"
-                v-for="(todo, index) in todos"
+                v-for="(todo, index) in paginatedTodos"
                 :key="index"
             >
                 <div class="w-auto p-5">
@@ -34,13 +41,43 @@
                     </p>
                 </div>
                 <div class="flex flex-row items-center space-x-2">
-                    <Button class="btn btn-primary"> Update </Button>
-                    <Button class="btn btn-error"> Delete </Button>
+                    <button
+                        @click="openModalForUpdate(todo)"
+                        class="btn btn-primary"
+                    >
+                        Update
+                    </button>
+                    <button @click="deleteTodo(todo.id)" class="btn btn-error">
+                        Delete
+                    </button>
                     <div
                         :class="getTodoStatusClass(todo.status)"
                         class="box-content w-3 h-full"
                     ></div>
                 </div>
+            </div>
+        </div>
+        <div class="flex justify-center w-full">
+            <div class="join">
+                <button
+                    @click="goToPreviousPage"
+                    class="join-item btn btn-outline"
+                >
+                    Previous page
+                </button>
+                <template v-for="pageNumber in getTotalPages()">
+                    <input
+                        class="join-item btn btn-square btn-outline"
+                        type="radio"
+                        name="options"
+                        :aria-label="pageNumber"
+                        :checked="pageNumber === currentPage"
+                        @click="currentPage = pageNumber"
+                    />
+                </template>
+                <button @click="goToNextPage" class="join-item btn btn-outline">
+                    Next
+                </button>
             </div>
         </div>
     </div>
@@ -111,12 +148,24 @@
                     <option value="false">Unfinished</option>
                 </select>
             </label>
-            <button @click="createTodo" class="btn btn-success">
+            <button
+                v-if="newTodo.id"
+                @click="updateTodo()"
+                class="btn btn-success"
+            >
+                Update Todo
+            </button>
+            <button v-else @click="createTodo()" class="btn btn-success">
                 Create Todo
             </button>
             <button @click="closeModal" class="w-full btn btn-square">
                 Close
             </button>
+        </div>
+        <div class="toast toast-center toast-middle">
+            <div class="alert alert-info" v-if="showToastSuccess">
+                <span>{{ toastMessageSuccess }}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -141,10 +190,21 @@ export default {
                 status: "",
             },
             isModalOpen: false,
+            filterDate: "",
+            currentPage: 1,
+            itemsPerPage: 4,
+            showToastSuccess: false,
+            toastMessageSuccess: "",
         };
     },
     mounted() {
         this.getTodos();
+    },
+    computed: {
+        paginatedTodos() {
+            const { startIndex, endIndex } = this.getPaginationRange();
+            return this.todos.slice(startIndex, endIndex);
+        },
     },
     methods: {
         async getTodos() {
@@ -176,25 +236,124 @@ export default {
                     }
                 );
                 this.todos.push(response.data);
-                this.newTodo = {
-                    title: "",
-                    tanggal: "",
-                    start_time: "",
-                    end_time: "",
-                    status: "",
-                };
+                this.resetFormAndCloseModal();
+                this.showToastSuccess = true;
+                this.toastMessageSuccess = "Create Todo successful";
+                setTimeout(() => {
+                    this.showToastSuccess = false;
+                }, 1000);
+                window.location.href = "/dashboard";
+                window.location.reload();
             } catch (error) {
                 console.error("Error creating todo:", error);
             }
         },
-        getTodoStatusClass(status) {
-            return status ? "bg-green-700" : "bg-red-700";
+        async updateTodo() {
+            const token = Cookies.get("token");
+            try {
+                const response = await axios.put(
+                    `http://localhost:3000/todos/${this.newTodo.id}`,
+                    this.newTodo,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                const index = this.todos.findIndex(
+                    (todo) => todo.id === this.newTodo.id
+                );
+                if (index !== -1) {
+                    this.todos[index] = response.data;
+                }
+                this.resetFormAndCloseModal();
+                this.showToastSuccess = true;
+                this.toastMessageSuccess = "Update Todo successful";
+                setTimeout(() => {
+                    this.showToastSuccess = false;
+                }, 1000);
+                window.location.href = "/dashboard";
+                window.location.reload();
+            } catch (error) {
+                console.error("Error updating todo:", error);
+            }
         },
-        openModal() {
+        async deleteTodo(todoId) {
+            const token = Cookies.get("token");
+            try {
+                await axios.delete(`http://localhost:3000/todos/${todoId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                this.todos = this.todos.filter((todo) => todo.id !== todoId);
+            } catch (error) {
+                console.error("Error deleting todo:", error);
+            }
+        },
+        applyDateFilter() {
+            if (this.filterDate) {
+                this.todos = this.todos.filter(
+                    (todo) => todo.tanggal === this.filterDate
+                );
+            } else {
+                this.getTodos();
+            }
+        },
+        resetFormAndCloseModal() {
+            this.newTodo = {
+                title: "",
+                tanggal: "",
+                start_time: "",
+                end_time: "",
+                status: "",
+            };
+            this.isModalOpen = false;
+        },
+        openModalForCreate() {
+            this.isModalOpen = true;
+            this.newTodo = {
+                title: "",
+                tanggal: "",
+                start_time: "",
+                end_time: "",
+                status: "",
+            };
+        },
+        openModalForUpdate(todo) {
+            this.newTodo = {
+                id: todo.id,
+                title: todo.title,
+                tanggal: todo.tanggal,
+                start_time: todo.start_time,
+                end_time: todo.end_time,
+                status: todo.status,
+            };
             this.isModalOpen = true;
         },
         closeModal() {
             this.isModalOpen = false;
+        },
+        getTodoStatusClass(status) {
+            return status ? "bg-green-700" : "bg-red-700";
+        },
+        getPaginationRange() {
+            const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return { startIndex, endIndex };
+        },
+        getTotalPages() {
+            return Math.ceil(this.todos.length / this.itemsPerPage);
+        },
+        goToPreviousPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        goToNextPage() {
+            if (this.currentPage < this.getTotalPages()) {
+                this.currentPage++;
+            }
         },
     },
 };
