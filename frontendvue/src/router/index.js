@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-const Cookies = require('js-cookie');
+import Cookies from 'js-cookie';
 
 const isAuthenticated = () => {
   return Cookies.get('token') !== undefined;
