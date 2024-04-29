@@ -68,7 +68,7 @@
                     >
                         <i class="w-4 h-4 fa-solid fa-key opacity-70"></i>
                         <input
-                            type="password"
+                            :type="showPassword ? 'text' : 'password'"
                             class="grow"
                             placeholder="Password"
                             name="password"
@@ -76,6 +76,11 @@
                             v-model="password"
                             required
                         />
+                        <i
+                            class="w-4 h-4 fa-solid"
+                            :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                            @click="togglePasswordVisibility"
+                        ></i>
                     </label>
                 </label>
 
@@ -136,6 +141,7 @@ export default {
             showToastError: false,
             toastMessageSuccess: "",
             toastMessageError: "",
+            showPassword: false,
         };
     },
     methods: {
@@ -153,6 +159,7 @@ export default {
                         id: data.user.id,
                         name: data.user.name,
                         image: data.user.image,
+                        email: data.user.email,
                     };
                     Cookies.set("user", JSON.stringify(user), { expires: 1 });
                     Cookies.set("token", data.token, {
@@ -181,6 +188,9 @@ export default {
                     this.showToastError = false;
                 }, 1000);
             }
+        },
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
         },
     },
 };

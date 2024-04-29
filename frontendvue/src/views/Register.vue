@@ -105,14 +105,18 @@
                     >
                         <i class="w-4 h-4 fa-solid fa-key opacity-70"></i>
                         <input
-                            type="password"
+                            :type="showPassword ? 'text' : 'password'"
                             class="grow"
                             placeholder="Password"
                             name="password"
                             id="password"
                             v-model="password"
                             required
-                        />
+                        /><i
+                            class="w-4 h-4 fa-solid"
+                            :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                            @click="togglePasswordVisibility"
+                        ></i>
                     </label>
                 </label>
                 <div class="flex items-center">
@@ -167,6 +171,7 @@ export default {
             agreedToTerms: false,
             showToastSuccess: false,
             toastMessageSuccess: "",
+            showPassword: false,
         };
     },
     methods: {
@@ -196,6 +201,9 @@ export default {
         },
         handleFileUpload(event) {
             this.image = event.target.files[0];
+        },
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
         },
     },
 };

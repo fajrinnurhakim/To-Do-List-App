@@ -202,8 +202,28 @@ export default {
     },
     computed: {
         paginatedTodos() {
+            const filteredTodos = this.todos.filter((todo) => !todo.status); // Filter unfinished todos
+            const unfinishedTodos = filteredTodos.sort((a, b) => {
+                if (a.tanggal !== b.tanggal) {
+                    return b.tanggal.localeCompare(a.tanggal);
+                } else {
+                    return new Date(a.end_time) - new Date(b.end_time);
+                }
+            });
+
+            const finishedTodos = this.todos.filter((todo) => todo.status);
+            const sortedFinishedTodos = finishedTodos.sort((a, b) => {
+                if (a.tanggal !== b.tanggal) {
+                    return b.tanggal.localeCompare(a.tanggal);
+                } else {
+                    return new Date(a.end_time) - new Date(b.end_time);
+                }
+            });
+
+            const sortedTodos = [...unfinishedTodos, ...sortedFinishedTodos];
+
             const { startIndex, endIndex } = this.getPaginationRange();
-            return this.todos.slice(startIndex, endIndex);
+            return sortedTodos.slice(startIndex, endIndex);
         },
     },
     methods: {
