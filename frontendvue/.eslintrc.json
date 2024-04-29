@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:vue/essential", "airbnb-base"],
+  "parserOptions": {
+    "ecmaVersion": 2015,
+    "sourceType": "module"
+  },
+  "plugins": ["vue"],
+  "rules": {
+    "vue/multi-word-component-names": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "global-require": "off",
+    "vue/no-unused-vars": "off",
+    "vue/valid-template-root": "off",
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
+    "vue/no-unused-components": "off",
+    "vue/no-async-in-computed-properties": "off",
+    "vue/no-dupe-keys": "off"
+  }
+}
